@@ -45,7 +45,7 @@ function atomarch_google_auth() {
 
     $client->setRedirectUri(yourls_admin_url());
 
-    if (isset($_SESSION['access_token']) && $_SESSION['access_token'] && !$_SESSION['access_token']['error']) {
+    if (isset($_SESSION['access_token']) && $_SESSION['access_token'] && !isset($_SESSION['access_token']['error'])) {
         // User has already authenticated against google with an approved domain, nothing to do
         return true;
 
