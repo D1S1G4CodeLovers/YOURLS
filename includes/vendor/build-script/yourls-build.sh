@@ -121,7 +121,7 @@ cleanup () {
     #     maybe_delete "$CUR"
     # fi
 
-    # echo ""
+    echo ""
 
 }
 

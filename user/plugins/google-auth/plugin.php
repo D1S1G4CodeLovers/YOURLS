@@ -45,7 +45,7 @@ function atomarch_google_auth() {
 
     $client->setRedirectUri(yourls_admin_url());
 
-    if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+    if (isset($_SESSION['access_token']) && $_SESSION['access_token'] && !isset($_SESSION['access_token']['error'])) {
         // User has already authenticated against google with an approved domain, nothing to do
         return true;
 
@@ -81,14 +81,16 @@ function atomarch_check_domain($google_client) {
 
     // List of domains that have permission to login. Use "*"" to allow access from any google account
     //$APPROVED_DOMAINS = array("domain1.com", "domain2.com");
-    $APPROVED_DOMAINS = array("*");
+    if (defined('APPROVED_DOMAIN')) {
+        $APPROVED_DOMAINS = APPROVED_DOMAIN;
+    } else {
+        $APPROVED_DOMAINS = array("*");
+    }
 
     if (in_array("*", $APPROVED_DOMAINS)) {
         return true;
     }
-
     if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
-
         $google_oauthV2 = new Google_Service_Oauth2($google_client);
         $user_info = $google_oauthV2->userinfo->get();
         $user_domain = substr(strrchr($user_info['email'], "@"), 1);
